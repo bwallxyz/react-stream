@@ -15,9 +15,10 @@ A React client for a NodeJS media streaming service
     Completed
         - Find YouTube videos with search bar on React client (youtube-search-without-api-key)
         - Download first result from search onto backend server as 'video-title'.mp4 (ytdl-core)
+        - List the contents of the media directory on the client
+        - Allow client to set the current video from the list of media
     
     Todo
-        - Connect backend to MongoDB and associate media to database entries 
-        - Display media contents from server to client
+        - Connect backend to MongoDB and associate media to database entries
         - Display the results of the YouTube search on the client and add download buttons
     

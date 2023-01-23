@@ -2,6 +2,7 @@ import './App.css';
 
 import Header from './components/Header';
 import MediaSearch from './components/MediaSearch';
+import MediaList from './components/MediaList';
 import VideoStream from './components/VideoStream';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
             <Header />
             <MediaSearch />
             <VideoStream />
+            <MediaList />
       </header>
     </div>
   );

@@ -15,7 +15,29 @@ app.use(express.json())
 
 const PORT = process.env.PORT
 
-const currentVideo = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'
+let currentVideo = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'
+
+
+function readDirectory(directoryPath) {
+
+    return new Promise((resolve, reject) => {
+        fs.readdir(directoryPath, (err, files) => {
+          if (err) {
+            reject(err);
+          }
+    
+          const fileArray = files.map(file => {
+            return {
+              name: file,
+              path: `${directoryPath}/${file}`
+            };
+          });
+    
+          resolve(fileArray);
+        });
+      });
+
+}
 
 
 
@@ -35,6 +57,7 @@ async function ytDownload2(link, filename) {
    
      console.log('Got video info')
      video.pipe(fs.createWriteStream(`./media/${filename}.mp4`))
+     console.log('piping')
     })
    
     var pos = 0
@@ -65,7 +88,6 @@ async function Search(req) {
     console.log('Videos:');
     console.log(videos[0]);
     ytDownload2(videos[0].url, videos[0].title)
-    
     return(videos)
 }
 
@@ -74,12 +96,15 @@ app.listen(PORT, () => {
     console.log(`Sever listening on ${PORT}`)
 })
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
+app.get('/', async (req, res) => {
+    const directoryPath = './media';
+    const directory = await readDirectory(directoryPath)
+    console.log(directory)
+    res.send(directory)
 })
 
 app.get('/video', (req, res) => {
-    res.sendFile(`media/${currentVideo}`, { root: __dirname })
+    res.sendFile(`${currentVideo}`, { root: __dirname })
 })
 
 app.post('/search', (req, res) => {
@@ -90,4 +115,11 @@ app.post('/search', (req, res) => {
 
     const response = Search(inputText)
 
+})
+
+app.post('/setvideo', (req, res) => {
+    console.log(req.body)
+    currentVideo = req.body.path
+    console.log(`Current video: ${currentVideo}`)
+    res.send('Set video')
 })
